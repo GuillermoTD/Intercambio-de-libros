@@ -1,0 +1,26 @@
+.SignInPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  background: #0001;
+  border:red 2px solid;
+
+}
+
+.SignInForm {
+    background:white;
+    min-height:25rem;
+    min-width:20rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.SignInInputs{
+    display: flex;
+    flex-direction: column;
+}

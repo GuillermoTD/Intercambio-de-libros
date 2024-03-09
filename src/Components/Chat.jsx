@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import sendIcon from '../Components/images/send.png'; 
-import chatIcon from '../Components/images/chatcircle.png'
+import sendIcon from "../assets/images/send.png" 
+import chatIcon from '../assets/images/chatcircle.png'
 
 const Chat = () => {
     const [formVisible, setFormVisible] = useState(true);

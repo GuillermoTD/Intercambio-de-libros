@@ -1,0 +1,25 @@
+.LoginPage{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height:100vh;
+    background:#0001;
+  
+}
+
+
+.LoginFom{
+    background:white;
+    min-height:25rem;
+    min-width:20rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.InnerForm{
+    background:red;
+}
