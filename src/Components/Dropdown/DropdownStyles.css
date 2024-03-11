@@ -1,31 +1,3 @@
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
-
-body {
-  width: 100vw;
-  height: 100vh;
-}
-
-.AddBook {
-  margin-right: 2rem;
-  width: 2.8rem;
-  height: 2.8rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition:all .3s ease-in-out;
-}
-
-.AddBook:hover{
-  border-radius:0.4rem;
-}
-
-
-
 .Dropdown {
   color: white;
 }

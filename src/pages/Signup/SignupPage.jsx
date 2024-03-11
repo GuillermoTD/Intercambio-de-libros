@@ -1,4 +1,4 @@
-import "./SignInPageStyles.css";
+import "./SignupPageStyles.css";
 
 import { Button, Form, Input } from "antd";
 const onFinish = (values) => {
@@ -7,8 +7,8 @@ const onFinish = (values) => {
 const onFinishFailed = (errorInfo) => {
   console.log("Failed:", errorInfo);
 };
-const SignInPage = () => (
-  <div className="SignInPage">
+const SignupPage = () => (
+  <div className="SignupPage">
     <Form
       className="SignInForm"
       name="basic"
@@ -82,4 +82,4 @@ const SignInPage = () => (
     </Form>
   </div>
 );
-export default SignInPage;
+export default SignupPage;

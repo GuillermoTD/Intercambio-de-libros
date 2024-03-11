@@ -38,10 +38,6 @@ const NewBookPage = () => {
           <p className="ant-upload-text">
             Click or drag file to this area to upload
           </p>
-          <p className="ant-upload-hint">
-            Support for a single or bulk upload. Strictly prohibited from
-            uploading company data or other banned files.
-          </p>
         </Dragger>
       </div>
       <div className="NewBookPage_Form">
@@ -65,13 +61,17 @@ const NewBookPage = () => {
           >
             <Input />
           </Form.Item>
-    
+
           <Form.Item label="Choose book category">
             <Select>
-              <Select.Option value="web development">Web Development</Select.Option>
+              <Select.Option value="web development">
+                Web Development
+              </Select.Option>
               <Select.Option value="hackging">Hacking</Select.Option>
               <Select.Option value="cibersecurity">CiberSecurity</Select.Option>
-              <Select.Option value="artificial intelligence">Artifitial Intelligence</Select.Option>
+              <Select.Option value="artificial intelligence">
+                Artifitial Intelligence
+              </Select.Option>
               <Select.Option value="data science">Data Science</Select.Option>
               <Select.Option value="robotics">Robotics</Select.Option>
             </Select>

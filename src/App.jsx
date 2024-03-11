@@ -1,120 +1,43 @@
-import { useState } from "react";
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-
-  AppstoreOutlined,
-  MailOutlined
-} from "@ant-design/icons";
-import { Layout, Menu, Button, theme } from "antd";
-
-import {auth} from "./Firebase.config"
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { Navigate, Route, Router, Routes, useNavigate } from "react-router-dom";
 import NewBookPage from "./pages/NewBook/NewBookPage";
-
-
-
-const { Header, Sider, Content } = Layout;
+import FilteredBooksPage from "./pages/FilteredBooksPage/FilteredBooksPage";
+import HomePage from "./pages/Home/HomePage";
+import LoginPage from "./pages/Login/LoginPage";
+import SignupPage from "./pages/Signup/SignupPage";
+import PrivateRoutes from "./components/PrivateRoutes";
+import { ContextApp } from "./context/ContextApp";
+import { useState } from "react";
 
 const App = () => {
-  const [collapsed, setCollapsed] = useState(false);
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [useProfileInfo, setUserProfileInfo] = useState();
 
-  console.log(auth)
+  const globalState = {
+    isAuthenticated,
+    setIsAuthenticated,
+    setUserProfileInfo,
+    useProfileInfo,
+  };
 
-  const authenticate = ()=>{
-    signInWithEmailAndPassword(auth,"guillermotd23@gmail.com","123456")
-    .then((userCredential)=>{
-      const user = userCredential.user
-      console.log("usuario logueado")
-      console.log(user)
-    })
-    .catch((error)=>{
-      console.log("no se pudo loguear")
-      console.log(error.message)
-    })
-  }
-  authenticate()
   return (
-    <div style={{width:"100vw",height:"100vh",overflowX:"hidden"}}>
-      <Layout style={{ height: "100%", width: "100%" }}>
-        <Sider trigger={null} collapsible collapsed={collapsed}>
-          <div className="demo-logo-vertical" />
-          <Menu
-            theme="dark"
-            mode="inline"
-            defaultSelectedKeys={["1"]}
-            items={items}
-          />
-        </Sider>
-        <Layout>
-          <Header
-            style={{
-              padding: 0,
-              background: colorBgContainer,
-            }}
-          >
-            <Button
-              type="text"
-              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-              onClick={() => setCollapsed(!collapsed)}
-              style={{
-                fontSize: "16px",
-                width: 64,
-                height: 64,
-              }}
+    <ContextApp.Provider value={globalState}>
+      <Routes>
+        {`Rutas public`}
+        <Route
+          path="/"
+          element={
+            <PrivateRoutes
+              element={<HomePage />}
+              isAuthenticated={isAuthenticated}
+              route="/login"
             />
-          </Header>
-          <Content
-            style={{
-              margin: "24px 16px",
-              padding: 24,
-              minHeight: 280,
-              background: colorBgContainer,
-              borderRadius: borderRadiusLG,
-              display:"flex",
-              flexDirection:"column",
-              alignItems:"center",
-              justifyContent:"center"
-            }}
-          >
-            <NewBookPage/>
-          </Content>
-        </Layout>
-      </Layout>
-    </div>
+          }
+        />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+      </Routes>
+    </ContextApp.Provider>
   );
 };
+
 export default App;
-
-
-
-function getItem(label, key, icon, children, type) {
-  return {
-    key,
-    icon,
-    children,
-    label,
-    type,
-  };
-}
-const items = [
-  getItem('Navigation One', 'sub1', <MailOutlined />, [
-    getItem('Option 1', '1'),
-    getItem('Option 2', '2'),
-    getItem('Option 3', '3'),
-    getItem('Option 4', '4'),
-  ]),
-  getItem('Categories', 'sub2', <AppstoreOutlined />, [
-    getItem('Web Development', '0'),
-    getItem('Hacking', '1'),
-    getItem('CiberSecurity', '2'),
-    getItem('Artifitial Intelligence', '3'),
-    getItem('Data Science', '4'),
-    getItem('Robotics', '5'),
-    // getItem('Ro', 'sub3', null, [getItem('Option 7', '7'), getItem('Option 8', '8')]),
-  ]),
-
-];

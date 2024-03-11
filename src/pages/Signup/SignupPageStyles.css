@@ -1,4 +1,4 @@
-.SignInPage {
+.SignupPage {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,7 +10,7 @@
 
 }
 
-.SignInForm {
+.SignupForm {
     background:white;
     min-height:25rem;
     min-width:20rem;
@@ -20,7 +20,7 @@
     justify-content: center;
 }
 
-.SignInInputs{
+.SignupInputs{
     display: flex;
     flex-direction: column;
 }
