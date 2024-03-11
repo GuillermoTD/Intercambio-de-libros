@@ -1,6 +1,6 @@
-import { Navigate, Route, Router, Routes, useNavigate } from "react-router-dom";
-import NewBookPage from "./pages/NewBook/NewBookPage";
-import FilteredBooksPage from "./pages/FilteredBooksPage/FilteredBooksPage";
+import {Route,Routes} from "react-router-dom";
+// import NewBookPage from "./pages/NewBook/NewBookPage";
+// import FilteredBooksPage from "./pages/FilteredBooksPage/FilteredBooksPage";
 import HomePage from "./pages/Home/HomePage";
 import LoginPage from "./pages/Login/LoginPage";
 import SignupPage from "./pages/Signup/SignupPage";
