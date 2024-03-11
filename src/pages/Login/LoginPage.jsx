@@ -18,8 +18,8 @@ const LoginPage = () => {
   const {isAuthenticated,setIsAuthenticated} = useContext(ContextApp)
   console.log(isAuthenticated);
 
-  const handleLogin = ()=>{
-    signInWithEmailAndPassword(auth,email,password)
+  const handleLogin = async()=>{
+    await signInWithEmailAndPassword(auth,email,password)
     .then((userCredential)=>{
       const user = userCredential
       console.log(user)
