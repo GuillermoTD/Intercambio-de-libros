@@ -16,7 +16,7 @@ import LoginPage from "../Login/LoginPage";
 import { Link } from "react-router-dom";
 import FilteredBooksPage from "../FilteredBooksPage/FilteredBooksPage";
 import { useNavigate } from "react-router-dom";
-import Chat from "../../components/Chat";
+import Chat from "../Chat/ChatPage";
 
 const { Header, Sider, Content } = Layout;
 

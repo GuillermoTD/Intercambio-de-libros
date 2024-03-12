@@ -1,11 +1,44 @@
 import { SendOutlined } from "@ant-design/icons";
 import "./ChatPageStyles.css";
 import { ContextApp } from "../../context/ContextApp";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  setDoc,
+  doc,
+  updateDoc,
+  serverTimestamp,
+  getDoc,
+} from "firebase/firestore";
+import { db } from "../../Firebase.config";
+
+
 
 const Chat = () => {
+
   const { setUserProfileInfo, useProfileInfo } = useContext(ContextApp);
+  const [filteredUser, setFilteredUser] = useState()
   const currentUser = JSON.parse(localStorage.getItem("user"));
+  const handleSearch = async (search) => {
+    const q = query(
+      collection(db, "users"),
+      where("displayName", "==", search)
+    );
+
+    try {
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        // setUser(doc.data());
+        console.log(doc.data())
+        setFilteredUser(doc.data())
+      });
+    } catch (err) {
+      console.log(err.message)
+    }
+  };
   // const {} = useProfileInfo
   console.log(currentUser);
   console.log("mi usuario " + currentUser?._tokenResponse?.displayName);
@@ -14,14 +47,18 @@ const Chat = () => {
       <div className="sidebar">
         <div className="search">
           <div className="searchForm">
-            <input type="text" placeholder="Busca al usuario..." />
+            <input type="text" placeholder="Busca al usuario..." onChange={(event) => handleSearch(event.target.value)} />
           </div>
-          <div className="userChat">
-            <img src="https://images.pexels.com/photos/20440051/pexels-photo-20440051/free-photo-of-moda-gente-mujer-relajacion.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" />
-            <div className="userChatInfo">
-              <span>Pablo</span>
-            </div>
-          </div>
+          {
+            filteredUser !== undefined ?
+              <div className="userChat">
+                <img src="https://images.pexels.com/photos/20440051/pexels-photo-20440051/free-photo-of-moda-gente-mujer-relajacion.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" />
+                <div className="userChatInfo">
+                  <span>{filteredUser.displayName}</span>
+                </div>
+              </div>
+              : null
+          }
         </div>
         <div className="chats">
           <div className="userChat">
