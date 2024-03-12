@@ -1,7 +1,7 @@
 import "./SignupPageStyles.css";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { db} from "../../Firebase.config";
-import { setDoc } from "firebase/firestore";
+import { db } from "../../Firebase.config";
+import { doc, setDoc } from "firebase/firestore";
 
 import { Button, Form, Input } from "antd";
 import { auth } from "../../Firebase.config";
@@ -20,7 +20,7 @@ const SignupPage = () => {
   const [email, setEmail] = useState();
   const [userName, setUserName] = useState();
   const [password, setPassword] = useState();
-  const {useProfileInfo,setUserProfileInfo} = useContext(ContextApp);
+  const { useProfileInfo, setUserProfileInfo } = useContext(ContextApp);
   const navigate = useNavigate();
 
 
@@ -32,7 +32,7 @@ const SignupPage = () => {
         console.log("user registered");
         console.log(user);
         setUserProfileInfo(user)
-      
+
       })
       .catch((error) => {
         console.log(error.message);
@@ -42,9 +42,9 @@ const SignupPage = () => {
 
     if (user) {
       // Actualiza el displayName con el nombre deseado
-    updateProfile(user,{
-          displayName: userName,
-        })
+      updateProfile(user, {
+        displayName: userName,
+      })
         .then(() => {
           console.log("Nombre de usuario actualizado correctamente");
         })
@@ -52,16 +52,20 @@ const SignupPage = () => {
           console.error("Error al actualizar el nombre de usuario:", error);
         });
     }
-
-    if(!localStorage.getItem("user")){
+    await setDoc(doc(db, "users", res.user.uid), {
+      uid: res.user.uid,
+      displayName,
+      email,
+    }); //create user firestore
+    if (!localStorage.getItem("user")) {
       localStorage.setItem("user", JSON.stringify(user))
     }
 
     console.log(JSON.parse(localStorage.getItem("user")))
-    navigate("/");
 
+    navigate("/");
   };
-console.log(useProfileInfo)
+  console.log(useProfileInfo)
   return (
     <div className="SignupPage">
       <Form
