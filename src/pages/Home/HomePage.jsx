@@ -11,11 +11,12 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import NewBookPage from "../NewBook/NewBookPage";
 import { PlusOutlined } from "@ant-design/icons";
 import { blue } from "@ant-design/colors";
-import { Route, Routes } from "react-router-dom";
+import { Outlet, Route, Routes } from "react-router-dom";
 import LoginPage from "../Login/LoginPage";
 import { Link } from "react-router-dom";
 import FilteredBooksPage from "../FilteredBooksPage/FilteredBooksPage";
 import { useNavigate } from "react-router-dom";
+import Chat from "../../components/Chat";
 
 const { Header, Sider, Content } = Layout;
 
@@ -100,6 +101,9 @@ const HomePage = () => {
             >
               <PlusOutlined style={{ color: "white", fontSize: "1.5rem" }} />
             </Link>
+            <Link to="chat">
+              CHAT
+            </Link>
           </Header>
           <Content
             style={{
@@ -114,10 +118,7 @@ const HomePage = () => {
               justifyContent: "center",
             }}
           >
-            {/* <Routes path="/home">
-              <Route path="/newbook" element={<NewBookPage />} />
-              <Route path="/books/:id" element={<FilteredBooksPage />} />
-            </Routes> */}
+        <Outlet/>
           </Content>
         </Layout>
       </Layout>

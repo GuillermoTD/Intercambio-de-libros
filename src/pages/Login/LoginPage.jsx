@@ -2,39 +2,60 @@ import "./LoginPageStyles.css";
 import { Button, Checkbox, Form, Input } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import { useContext, useState} from "react";
-import {useNavigate} from "react-router-dom"
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../Firebase.config";
 import { ContextApp } from "../../context/ContextApp";
 
-
-
 const LoginPage = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-  const navigate = useNavigate()
-  
-  const {isAuthenticated,setIsAuthenticated} = useContext(ContextApp)
-  console.log(isAuthenticated);
+  const navigate = useNavigate();
+  const userLocalStorage = localStorage.getItem("user")
+  const [currentUser, setCurrentUser] = useState()
+ 
 
-  const handleLogin = async()=>{
-    await signInWithEmailAndPassword(auth,email,password)
-    .then((userCredential)=>{
-      const user = userCredential
-      console.log(user)
-      setIsAuthenticated(true)
-      console.log("usuario logueado")
-      navigate("/")
-    })
-    .catch((error)=>{
-      if(error.message == "Firebase: Error (auth/missing-email)."){
-        console.log("usuario incorrecto")
-        return
-      }
-      console.log(error.message)
-    })
-  }
+  const { isAuthenticated, setIsAuthenticated, useData } =
+    useContext(ContextApp);
+
+  console.log(isAuthenticated);
+  console.log(useData);
+
+  const handleLogin = async () => {
+    // if(!localStorage.getItem("user")){
+    //   localStorage.setItem("user")
+    // }
+
+    await signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential;
+        // console.log(user)
+        setIsAuthenticated(true);
+        // console.log("usuario logueado")
+
+        if(!userLocalStorage){
+          localStorage.setItem("user", JSON.stringify(user))
+        }else{
+          localStorage.setItem("user", JSON.stringify(user))
+        }
+
+        // setCurrentUser(JSON.parse(userLocalStorage))
+
+        console.log(localStorage.getItem("user"))
+
+        navigate("/");
+
+
+      })
+      .catch((error) => {
+        if (error.message == "Firebase: Error (auth/missing-email).") {
+          console.log("usuario incorrecto");
+          return;
+        }
+        console.log(error.message);
+      });
+  };
 
   return (
     <div className="LoginPage">
@@ -49,8 +70,8 @@ const LoginPage = () => {
           padding: "4rem 4rem",
           display: "flex",
           flexDirection: "column",
-          justifyContent:"center",
-          alignContent:"center"
+          justifyContent: "center",
+          alignContent: "center",
         }}
       >
         <h1 style={{ marginBottom: "2rem" }}>Login</h1>
@@ -102,7 +123,7 @@ const LoginPage = () => {
             htmlType="submit"
             className="login-form-button"
             style={{ width: "100%" }}
-            onClick={()=>handleLogin()}
+            onClick={() => handleLogin()}
           >
             Log in
           </Button>

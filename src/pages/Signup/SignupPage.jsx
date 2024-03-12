@@ -1,9 +1,14 @@
 import "./SignupPageStyles.css";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { db} from "../../Firebase.config";
+import { setDoc } from "firebase/firestore";
 
 import { Button, Form, Input } from "antd";
 import { auth } from "../../Firebase.config";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { ContextApp } from "../../context/ContextApp";
+import { useNavigate } from "react-router-dom";
+
 const onFinish = (values) => {
   console.log("Success:", values);
 };
@@ -13,20 +18,50 @@ const onFinishFailed = (errorInfo) => {
 
 const SignupPage = () => {
   const [email, setEmail] = useState();
+  const [userName, setUserName] = useState();
   const [password, setPassword] = useState();
+  const {useProfileInfo,setUserProfileInfo} = useContext(ContextApp);
+  const navigate = useNavigate();
+
+
 
   const handleSignup = async () => {
-    await createUserWithEmailAndPassword(auth,email,password)
-    .then((useCredential)=>{
-      const user = useCredential;
-      console.log("user registered")
-      console.log(user)
-    })
-    .catch((error)=>{
-      console.log(error.message)
-    })
-  };
+    await createUserWithEmailAndPassword(auth, email, password)
+      .then((useCredential) => {
+        const user = useCredential;
+        console.log("user registered");
+        console.log(user);
+        setUserProfileInfo(user)
+      
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
 
+    const user = auth.currentUser;
+
+    if (user) {
+      // Actualiza el displayName con el nombre deseado
+    updateProfile(user,{
+          displayName: userName,
+        })
+        .then(() => {
+          console.log("Nombre de usuario actualizado correctamente");
+        })
+        .catch((error) => {
+          console.error("Error al actualizar el nombre de usuario:", error);
+        });
+    }
+
+    if(!localStorage.getItem("user")){
+      localStorage.setItem("user", JSON.stringify(user))
+    }
+
+    console.log(JSON.parse(localStorage.getItem("user")))
+    navigate("/");
+
+  };
+console.log(useProfileInfo)
   return (
     <div className="SignupPage">
       <Form
@@ -63,6 +98,18 @@ const SignupPage = () => {
             <Input onChange={(event) => setEmail(event.target.value)} />
           </Form.Item>
           <Form.Item
+            label="UserName"
+            name="username"
+            rules={[
+              {
+                required: true,
+                message: "Please input your username!",
+              },
+            ]}
+          >
+            <Input onChange={(event) => setUserName(event.target.value)} />
+          </Form.Item>
+          <Form.Item
             label="Password"
             name="password"
             rules={[
@@ -72,7 +119,9 @@ const SignupPage = () => {
               },
             ]}
           >
-            <Input.Password  onChange={(event) => setPassword(event.target.value)} />
+            <Input.Password
+              onChange={(event) => setPassword(event.target.value)}
+            />
           </Form.Item>
         </div>
 
@@ -80,7 +129,7 @@ const SignupPage = () => {
           style={{ height: "2.5rem", width: "7rem", marginTop: "1.4rem" }}
           type="primary"
           htmlType="submit"
-          onClick={()=>handleSignup()}
+          onClick={() => handleSignup()}
         >
           Submit
         </Button>
