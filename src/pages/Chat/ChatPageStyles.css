@@ -1,189 +1,195 @@
+* {
+  outline: none;
+}
+
+
+
+
 body {
-    background-color: #99c3ebf6;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .container {
-    background-color: rgb(255, 255, 255);
-    border-radius: 5px;
-    width: 130vh;
-    height: 80vh;
-    display: flex;
-    position: relative;
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    overflow: hidden;
-  }
-  
-  .sidebar {
-    background-color: rgba(189, 12, 12, 0.63);
-    width: 40vh;
-    height: 80vh;
-  }
-  
-  .msgbox {
-    background-color: rgba(166, 167, 166, 0.37);
-    height: 10vh;
-    position: absolute;
-    bottom: 0;
-    left: 40vh;
-    right: 0;
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .namebox {
-    background-color: rgba(166, 167, 166, 0.37);
-    height: 7vh;
-    position: absolute;
-    top: 0;
-    left: 40vh;
-    right: 0;
-  }
-  
-  .searchForm {
-    padding: 10px;
-    margin-top: 20px;
-  
-    input {
-      background-color: transparent;
-      border: none;
-      color: white;
-      outline: none;
-  
-      &::placeholder {
-        color: lightgray;
-      }
+  background-color: #0004;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  background-color: rgb(255, 255, 255);
+  border-radius: 5px;
+  width: 130vh;
+  height: 80vh;
+  display: flex;
+  position: relative;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  overflow: hidden;
+}
+
+.sidebar {
+  background: var(--colorSecundario);
+  width: 40vh;
+  height: 80vh;
+}
+
+.msgbox {
+  background-color: rgba(166, 167, 166, 0.37);
+  height: 10vh;
+  position: absolute;
+  bottom: 0;
+  left: 40vh;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.namebox {
+  background-color: rgba(166, 167, 166, 0.37);
+  height: 7vh;
+  position: absolute;
+  top: 0;
+  left: 40vh;
+  right: 0;
+}
+
+.searchForm {
+  padding: 10px;
+  margin-top: 20px;
+
+  input {
+    background-color: transparent;
+    border: none;
+    color: white;
+    outline: none;
+
+    &::placeholder {
+      color: lightgray;
     }
   }
-  
-  .search {
-    border-bottom: 1px solid gray;
+}
+
+.search {
+  border-bottom: 1px solid gray;
+}
+
+.userChat {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgb(247, 122, 122);
   }
-  
-  .userChat {
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+
+  img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .userChatInfo {
+    span {
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    p {
+      font-size: 14px;
+      color: lightgray;
+    }
+  }
+}
+
+.chatInfo {
+  padding: 15px;
+  background: var(--colorPrincipal);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  color:white;
+}
+
+.chatInfo_ProfileImage {
+  width: 2.4rem;
+  height: 2.4rem;
+  background: lightblue;
+  border-radius: 50%;
+}
+
+.messages {
+  margin-top: 20px;
+  padding: 10px;
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+
+  &.owner {
+    flex-direction: row-reverse;
+
+    p {
+      background-color: var(--colorTerciario);
+      color: white;
+      border-radius: 10px 0px 10px 10px;
+    }
+  }
+}
+
+.msginput {
+  input {
+    border: none;
+    border-radius: 10px;
+    height: 40px;
+    width: 70vh;
+    padding-left: 0.6rem;
+  }
+}
+
+.messageInfo {
+  display: flex;
+  flex-direction: column;
+  color: gray;
+  font-weight: 300;
+
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+}
+
+.messageContent {
+  max-width: 80%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  p {
+    background-color: rgba(231, 216, 216, 0.527);
+    padding: 10px 20px;
+    border-radius: 0px 10px 10px;
+  }
+
+  img {
+    width: 50%;
+  }
+}
+
+.send-btn {
+  padding-right: 30px;
+
+  button {
+    height: 50px;
+    width: 50px;
+    border-radius: 10px;
+    background-color: var(--colorTerciario);
+    border: none;
     color: white;
     cursor: pointer;
-  
-  
-    &:hover {
-      background-color: rgb(247, 122, 122);
-    }
-  
-    img {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-  
-    .userChatInfo {
-      span {
-        font-size: 18px;
-        font-weight: 500;
-      }
-  
-      p {
-        font-size: 14px;
-        color: lightgray;
-      }
-    }
   }
-  
-  .chatInfo {
-    padding: 15px;
-    background:red;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap:0.5rem;
-  }
-  
-  .chatInfo_ProfileImage{
-    width:2.4rem;
-    height:2.4rem;
-    background:lightblue;
-    border-radius: 50%;
-  }
-  
-  .messages {
-    margin-top: 20px;
-    padding: 10px;
-    display: flex;
-    gap: 20px;
-    margin-bottom: 20px;
-  
-    &.owner {
-      flex-direction: row-reverse;
-  
-      p {
-        background-color: rgb(236, 161, 161);
-        color: white;
-        border-radius: 10px 0px 10px 10px;
-      }
-    }
-  }
-  
-  .msginput {
-    margin-top: 20px;
-  
-    input {
-      border: none;
-      border-radius: 10px;
-      height: 60px;
-      width: 70vh;
-      margin-left: 90px;
-    }
-  }
-  
-  .messageInfo {
-    display: flex;
-    flex-direction: column;
-    color: gray;
-    font-weight: 300;
-  
-    img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-  }
-  
-  .messageContent {
-    max-width: 80%;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  
-    p {
-      background-color: rgba(231, 216, 216, 0.527);
-      padding: 10px 20px;
-      border-radius: 0px 10px 10px;
-    }
-  
-    img {
-      width: 50%;
-    }
-  }
-  
-  .send-btn {
-    padding-right: 30px;
-    margin-top: 27px;
-  
-    button {
-      height: 50px;
-      width: 50px;
-      border-radius: 10px;
-      background-color: rgb(235, 140, 140);
-      border: none;
-      color: white;
-      cursor: pointer;
-    }
-  }
+}

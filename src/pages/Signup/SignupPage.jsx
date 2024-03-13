@@ -56,6 +56,7 @@ const SignupPage = () => {
       uid: res.user.uid,
       displayName,
       email,
+      messages:[]
     }); //create user firestore
     if (!localStorage.getItem("user")) {
       localStorage.setItem("user", JSON.stringify(user))

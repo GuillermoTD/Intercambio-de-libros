@@ -14,13 +14,11 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { db } from "../../Firebase.config";
-
-
+import { Flex, Radio } from "antd";
 
 const Chat = () => {
-
   const { setUserProfileInfo, useProfileInfo } = useContext(ContextApp);
-  const [filteredUser, setFilteredUser] = useState()
+  const [filteredUser, setFilteredUser] = useState();
   const currentUser = JSON.parse(localStorage.getItem("user"));
   const handleSearch = async (search) => {
     const q = query(
@@ -32,11 +30,11 @@ const Chat = () => {
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
         // setUser(doc.data());
-        console.log(doc.data())
-        setFilteredUser(doc.data())
+        console.log(doc.data());
+        setFilteredUser(doc.data());
       });
     } catch (err) {
-      console.log(err.message)
+      console.log(err.message);
     }
   };
   // const {} = useProfileInfo
@@ -47,20 +45,22 @@ const Chat = () => {
       <div className="sidebar">
         <div className="search">
           <div className="searchForm">
-            <input type="text" placeholder="Busca al usuario..." onChange={(event) => handleSearch(event.target.value)} />
+            <input
+              type="text"
+              placeholder="Busca al usuario..."
+              onChange={(event) => handleSearch(event.target.value)}
+            />
           </div>
-          {
-            filteredUser !== undefined ?
-              <div className="userChat">
-                <img src="https://images.pexels.com/photos/20440051/pexels-photo-20440051/free-photo-of-moda-gente-mujer-relajacion.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" />
-                <div className="userChatInfo">
-                  <span>{filteredUser.displayName}</span>
-                </div>
+          {filteredUser !== undefined ? (
+            <div className="userChat">
+              <img src="https://images.pexels.com/photos/20440051/pexels-photo-20440051/free-photo-of-moda-gente-mujer-relajacion.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" />
+              <div className="userChatInfo">
+                <span>{filteredUser.displayName}</span>
               </div>
-              : null
-          }
+            </div>
+          ) : null}
         </div>
-        <div className="chats">
+        {/* <div className="chats">
           <div className="userChat">
             <img src="https://images.pexels.com/photos/20440051/pexels-photo-20440051/free-photo-of-moda-gente-mujer-relajacion.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" />
             <div className="userChatInfo">
@@ -68,7 +68,7 @@ const Chat = () => {
               <p>Hooola</p>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
       <div className="msgbox">
         <div className="msginput">
@@ -95,7 +95,18 @@ const Chat = () => {
             <img src="" />
           </div>
         </div>
+        <div className="messages">
+          <div className="messageInfo">
+            <img src="https://images.pexels.com/photos/18625018/pexels-photo-18625018/free-photo-of-mar-playa-mujer-sentado.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" />
+            <span>Just now</span>
+          </div>
+          <div className="messageContent">
+            <p>Hola</p>
+            <img src="" />
+          </div>
+        </div>
       </div>
+   
     </div>
   );
 };
