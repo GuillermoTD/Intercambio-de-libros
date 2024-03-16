@@ -16,7 +16,9 @@ import LoginPage from "../Login/LoginPage";
 import { Link } from "react-router-dom";
 import FilteredBooksPage from "../FilteredBooksPage/FilteredBooksPage";
 import { useNavigate } from "react-router-dom";
-import Chat from "../Chat/ChatPage";
+import ChatPage from '../Chat/ChatPage'
+import { IoChatbox } from "react-icons/io5";
+
 
 const { Header, Sider, Content } = Layout;
 
@@ -94,6 +96,11 @@ const HomePage = () => {
                 height: 64,
               }}
             />
+            <div className="home-btn" style={{display:'flex',
+            alignItems:"center",
+            justifyContent:"center",
+            
+            }}>
             <Link
               to="/newbook"
               className="AddBook"
@@ -101,9 +108,10 @@ const HomePage = () => {
             >
               <PlusOutlined style={{ color: "white", fontSize: "1.5rem" }} />
             </Link>
-            <Link to="chat">
-              CHAT
+            <Link to="chat" style={{fontSize: "2.8rem", justifyContent:"center", alignItems:"center" , paddingTop:"1.2rem",paddingRight:"1.2rem",}}>
+            <IoChatbox/>
             </Link>
+            </div>
           </Header>
           <Content
             style={{

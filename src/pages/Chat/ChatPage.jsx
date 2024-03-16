@@ -1,7 +1,8 @@
 import { SendOutlined } from "@ant-design/icons";
 import "./ChatPageStyles.css";
-import { ContextApp } from "../../context/ContextApp";
-import { useContext, useState } from "react";
+import { useState, useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from '../../Firebase.config';
 import {
   collection,
   query,
@@ -17,29 +18,76 @@ import { db } from "../../Firebase.config";
 import { Flex, Radio } from "antd";
 
 const Chat = () => {
-  const { setUserProfileInfo, useProfileInfo } = useContext(ContextApp);
-  const [filteredUser, setFilteredUser] = useState();
-  const currentUser = JSON.parse(localStorage.getItem("user"));
-  const handleSearch = async (search) => {
+  const [username, setUsername] = useState("");
+  const [user, setUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState({});
+  const [err, setErr] = useState(false);
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+      console.log(user);
+    });
+    return () => {
+      unsub();
+    }
+  }, []);
+  const handleSearch = async () => {
     const q = query(
       collection(db, "users"),
-      where("displayName", "==", search)
+      where("displayName", "==", username)
     );
 
     try {
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
-        // setUser(doc.data());
-        console.log(doc.data());
-        setFilteredUser(doc.data());
+        setUser(doc.data());
       });
     } catch (err) {
-      console.log(err.message);
+      setErr(true);
     }
   };
-  // const {} = useProfileInfo
-  console.log(currentUser);
-  console.log("mi usuario " + currentUser?._tokenResponse?.displayName);
+
+  const handleKey = (e) => {
+    e.code === "Enter" && handleSearch();
+  };
+  const handleSelect = async () => {
+    //check whether the group(chats in firestore) exists, if not create
+    const combinedId =
+      currentUser.uid > user.uid
+        ? currentUser.uid + user.uid
+        : user.uid + currentUser.uid;
+    try {
+      const res = await getDoc(doc(db, "chats", combinedId));
+
+      if (!res.exists()) {
+        //create a chat in chats collection
+        await setDoc(doc(db, "chats", combinedId), { messages: [] });
+
+        //create user chats
+        await updateDoc(doc(db, "usersChats", currentUser.uid), {
+          [combinedId + ".userInfo"]: {
+            uid: user.uid,
+            displayName: user.displayName,
+
+          },
+          [combinedId + ".date"]: serverTimestamp(),
+
+        });
+        await updateDoc(doc(db, "usersChats", user.uid), {
+          [combinedId + ".userInfo"]: {
+            uid: currentUser.uid,
+            displayName: currentUser.displayName,
+          },
+          [combinedId + ".date"]: serverTimestamp(),
+        });
+
+      }
+    } catch (err) { }
+    setUser(null);
+    setUsername("")
+  };
+  
+
   return (
     <div className="container">
       <div className="sidebar">
@@ -48,17 +96,19 @@ const Chat = () => {
             <input
               type="text"
               placeholder="Busca al usuario..."
-              onChange={(event) => handleSearch(event.target.value)}
+              onKeyDown={handleKey}
+              onChange={(event) => setUsername(event.target.value)}
+             value={username}
             />
           </div>
-          {filteredUser !== undefined ? (
-            <div className="userChat">
+          {user && (
+            <div className="userChat" onClick={handleSelect}>
               <img src="https://images.pexels.com/photos/20440051/pexels-photo-20440051/free-photo-of-moda-gente-mujer-relajacion.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" />
               <div className="userChatInfo">
-                <span>{filteredUser.displayName}</span>
+                <span>{user.displayName}</span>
               </div>
             </div>
-          ) : null}
+          )}
         </div>
         {/* <div className="chats">
           <div className="userChat">
@@ -82,8 +132,8 @@ const Chat = () => {
       </div>
       <div className="namebox">
         <div className="chatInfo">
-          <span>{currentUser?._tokenResponse?.displayName}</span>
-          <div className="chatInfo_ProfileImage"></div>
+          <span>{user?.displayName}</span>
+          </div>
         </div>
         <div className="messages owner">
           <div className="messageInfo">
@@ -106,8 +156,8 @@ const Chat = () => {
           </div>
         </div>
       </div>
-   
-    </div>
+
+  
   );
 };
 

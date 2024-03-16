@@ -4,12 +4,12 @@ import { Route, Routes } from "react-router-dom";
 import HomePage from "./pages/Home/HomePage";
 import LoginPage from "./pages/Login/LoginPage";
 import SignupPage from "./pages/Signup/SignupPage";
-import PrivateRoutes from "./components/PrivateRoutes";
+import PrivateRoutes from "./Components/PrivateRoutes";
 import { ContextApp } from "./context/ContextApp";
 import { useState } from "react";
 import NewBookPage from "./pages/NewBook/NewBookPage";
 import FilteredBooksPage from "./pages/FilteredBooksPage/FilteredBooksPage";
-import ChatPage from "./pages/Chat/ChatPage";
+import ChatPage from './pages/Chat/ChatPage'
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
