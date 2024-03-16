@@ -10,7 +10,20 @@
 .NewBookPage_UploadImage{
     width:30%;
     height:70%;
-    border:2px soli blue;
+    border:2px solid blue;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    input{
+        background:red;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        width:70%;
+        height:3rem;
+    }
 }
 
 .NewBookPage_Form{
@@ -21,3 +34,4 @@
     align-items: flex-start;
     justify-content: center;
 }
+

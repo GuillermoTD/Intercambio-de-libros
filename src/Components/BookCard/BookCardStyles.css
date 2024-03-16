@@ -1,0 +1,36 @@
+.Bookcard{
+    border:1px solid #0003;
+    height:20rem;
+    width:13rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    border-radius:0.64rem;
+
+    img{
+        width:100%;
+        height:85%;
+    }
+
+    .BookCard_Footer{
+        display: flex;
+        align-items: center;
+        gap:1rem;
+        width:100%;
+        height:100%;
+        padding-left:0.5rem;
+    }
+    .BookCard_Footer_Profile{
+        width:2.5rem;
+        height:2.5rem;
+        border-radius: 50%;
+        background:lightblue;
+    }
+    .BookCard_Footer_UserName{
+
+    }
+
+}
+
+
+.

@@ -12,9 +12,8 @@ const LoginPage = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const navigate = useNavigate();
-  const userLocalStorage = localStorage.getItem("user")
-  const [currentUser, setCurrentUser] = useState()
- 
+  const userLocalStorage = localStorage.getItem("user");
+  const [currentUser, setCurrentUser] = useState();
 
   const { isAuthenticated, setIsAuthenticated, useData } =
     useContext(ContextApp);
@@ -34,19 +33,17 @@ const LoginPage = () => {
         setIsAuthenticated(true);
         // console.log("usuario logueado")
 
-        if(!userLocalStorage){
-          localStorage.setItem("user", JSON.stringify(user))
-        }else{
-          localStorage.setItem("user", JSON.stringify(user))
+        if (!userLocalStorage) {
+          localStorage.setItem("user", JSON.stringify(user));
+        } else {
+          localStorage.setItem("user", JSON.stringify(user));
         }
 
         // setCurrentUser(JSON.parse(userLocalStorage))
 
-        console.log(localStorage.getItem("user"))
+        console.log(localStorage.getItem("user"));
 
         navigate("/");
-
-
       })
       .catch((error) => {
         if (error.message == "Firebase: Error (auth/missing-email).") {
@@ -100,11 +97,15 @@ const LoginPage = () => {
             },
           ]}
         >
-          <Input
+          {/* <Input
             prefix={<LockOutlined className="site-form-item-icon" />}
             type="password"
             placeholder="Password"
             onChange={(event) => setPassword(event.target.value)}
+          /> */}
+          <Input.Password
+            onChange={(event) => setPassword(event.target.value)}
+              placeholder="Password"
           />
         </Form.Item>
         {/* <Form.Item>
