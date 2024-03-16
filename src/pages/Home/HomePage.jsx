@@ -17,6 +17,12 @@ import { Link } from "react-router-dom";
 import FilteredBooksPage from "../FilteredBooksPage/FilteredBooksPage";
 import { useNavigate } from "react-router-dom";
 import Chat from "../Chat/ChatPage";
+import { useLocation } from "react-router-dom";
+import FeedBooks from "../../components/FeedBooks/FeedBooks";
+import { CiChat1 } from "react-icons/ci";
+import { collection, getDocs } from "firebase/firestore";
+
+
 
 const { Header, Sider, Content } = Layout;
 
@@ -27,35 +33,11 @@ const HomePage = () => {
   } = theme.useToken();
   const Navigate = useNavigate();
 
-  function getItem(label, key, icon = "", children, type, link) {
-    return {
-      key,
-      icon,
-      children,
-      label,
-      type,
-      link,
-    };
-  }
-  // const items = [
-  //   {label:"Web Development",key:"/books/:webdevelopment"},
-  //   {label:"Hacking",key:"/books/:hacking"},
-  //   {label:"CyberSecurity",key:"/books/:cybersecurity"}
-  // ]
+  const { pathname } = useLocation();
 
-  const authenticate = () => {
-    signInWithEmailAndPassword(auth, "guillermotd23@gmail.com", "123456")
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log("usuario logueado");
-        console.log(user);
-      })
-      .catch((error) => {
-        console.log("no se pudo loguear");
-        console.log(error.message);
-      });
-  };
-  authenticate();
+
+
+
   return (
     <div style={{ width: "100vw", height: "100vh", overflowX: "hidden" }}>
       <Layout style={{ height: "100%", width: "100%" }}>
@@ -84,26 +66,37 @@ const HomePage = () => {
               alignItems: "center",
             }}
           >
-            <Button
-              type="text"
-              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-              onClick={() => setCollapsed(!collapsed)}
+            <div style={{ display: "flex", gap: "1rem" }}>
+              <Button
+                type="text"
+                icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                onClick={() => setCollapsed(!collapsed)}
+                style={{
+                  fontSize: "16px",
+                  width: 64,
+                  height: 64,
+                }}
+              />
+              <Link to="/">NerdsBooks</Link>
+            </div>
+            <div
               style={{
-                fontSize: "16px",
-                width: 64,
-                height: 64,
+                display: "flex",
+                gap: "0.3rem",
+                alignItems: "center",
+                justifyContent: "center",
+                paddingRight: "1.08rem",
               }}
-            />
-            <Link
-              to="/newbook"
-              className="AddBook"
-              style={{ background: blue.primary }}
             >
-              <PlusOutlined style={{ color: "white", fontSize: "1.5rem" }} />
-            </Link>
-            <Link to="chat">
-              CHAT
-            </Link>
+              <Link
+                to="/newbook"
+                className="AddBook"
+                style={{ background: blue.primary }}
+              >
+                <PlusOutlined style={{ color: "white", fontSize: "1.5rem" }} />
+              </Link>
+              <Link to="chat" style={{fontSize:"2.2rem"}}><CiChat1 style={{fontSize:"2.2rem"}}/></Link>
+            </div>
           </Header>
           <Content
             style={{
@@ -116,9 +109,11 @@ const HomePage = () => {
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
+              overflowX:"hidden",
+              overflowY:"scroll"
             }}
           >
-        <Outlet/>
+            {pathname == "/" ? <FeedBooks /> : <Outlet />}
           </Content>
         </Layout>
       </Layout>
@@ -127,9 +122,3 @@ const HomePage = () => {
 };
 export default HomePage;
 
-// const items = [
-//   getItem('Navigation One', 'sub1', <MailOutlined />, [
-//     <Link key={} to="/books/:webdevelopment">Web Development</Link>
-//   ]),
-
-// ];

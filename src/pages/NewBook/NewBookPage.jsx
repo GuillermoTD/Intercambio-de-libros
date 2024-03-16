@@ -9,71 +9,67 @@ import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { db } from "../../Firebase.config";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../../Firebase.config";
-import { UploadOutlined } from '@ant-design/icons';
+import { UploadOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router";
+
 const NewBookPage = () => {
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
   const [category, setCategory] = useState();
   const [imageUrl, setImageUrl] = useState();
-  const formRef = useRef()
+  const [image, setImage] = useState()
+  const navigate = useNavigate(); 
 
   const { Dragger } = Upload;
 
+  const userInfo = JSON.parse(localStorage.getItem("user"));
+  const { displayName, email } = userInfo.user;
+
   const handleUpload = async (file) => {
     try {
+      console.log(file);
       // Referencia al archivo en el storage
-      const storageRef = ref(storage, `new Date().getTime()`);
+      const storageRef = ref(storage, `imagen_${new Date().getTime()}.jpg`);
 
-      // Subir el archivo
-      await uploadBytes(storageRef, file);
+      // Subir el archivo y obtener el enlace de descarga
+      const { downloadURL } = await uploadBytes(storageRef, file, {
+        contentType: "image/jpeg",
+      });
 
-      // Obtener el enlace de descarga
-      const downloadURL = await getDownloadURL(storageRef);
 
-      setImageUrl(downloadURL); // Establece la URL de la imagen en el estado para su visualización o uso posterior
-      message.success("Imagen subida con éxito");
-      console.log(imageUrl);
+      setImageUrl(downloadURL); // Establece la URL de la imagen en el estado
+      // message.success("Imagen subida con éxito");
+      console.log(downloadURL);
     } catch (error) {
       console.error("Error al subir la imagen:", error);
       message.error("Error al subir la imagen");
     }
   };
- 
 
-  const props = {
-    action: '//jsonplaceholder.typicode.com/posts/',
-    listType: 'picture',
-  };
   const handleCreateNewBook = async () => {
-    // await addDoc(collection(db, "books","JcmJcfUkM6U17F8BMjqO"), async () => {
-    //   try {
-    //     await setDoc(doc(db, "books"), {
-    //       title,
-    //       description,
-    //       category,
-    //       image: imageUrl,
-    //       likes: 0,
-    //       comments: [],
-    //       dislikes: 0,
-    //     });
-    //     console.log("user saved successfully!");
-    //   } catch (error) {
-    //     console.log("Error al crear usuario" + error.message);
-    //   }
-    // });
+    if (!imageUrl) {
+      message.error("No se ha seleccionado ninguna imagen");
+      return; // Detener la ejecución si no hay imagen
+    }
+
+    const { downloadURL } = await handleUpload(image);
+
     try {
       const docRef = await addDoc(collection(db, "books"), {
-        title:`${title}${new Date().getTime()}`,
+        title: `${title}${new Date().getTime()}`,
         description,
         category,
-        image: imageUrl,
+        image: downloadURL,
         likes: 0,
         comments: [],
         dislikes: 0,
+        email,
+        displayName,
       });
       console.log(docRef);
+      navigate("/");
     } catch (error) {
-      console.log("Error al crear usuario" + error.message);
+      console.log("Error al crear usuario " + error.message);
     }
   };
 
@@ -88,7 +84,6 @@ const NewBookPage = () => {
             width: "100%",
           }}
           validateMessages={validateMessages}
-          ref={formRef}
         >
           <Form.Item
             name={["user", "Title"]}
@@ -104,15 +99,13 @@ const NewBookPage = () => {
 
           <Form.Item label="Choose book category">
             <Select onChange={(value) => setCategory(value)}>
-              <Select.Option value="web development">
+              <Select.Option value="webdevelopment">
                 Web Development
               </Select.Option>
-              <Select.Option value="hackging">Hacking</Select.Option>
+              <Select.Option value="hacking">Hacking</Select.Option>
               <Select.Option value="cibersecurity">CiberSecurity</Select.Option>
-              <Select.Option value="artificial intelligence">
-                Artifitial Intelligence
-              </Select.Option>
-              <Select.Option value="data science">Data Science</Select.Option>
+              <Select.Option value="I.A">Artifitial Intelligence</Select.Option>
+              <Select.Option value="datascience">Data Science</Select.Option>
               <Select.Option value="robotics">Robotics</Select.Option>
             </Select>
           </Form.Item>
@@ -134,13 +127,12 @@ const NewBookPage = () => {
             >
               Create user
             </Button>
-            {/* <input
-              type="file"
-              onChange={(event) => handleUpload(event.target.files[0])}
-              style={{marginTop:"2rem",border:"none"}}
-            /> */}
-            <Form.Item style={{marginTop:"1rem"}}>
-              <Upload {...props} onChange={(event)=>handleUpload(event.target.files[0])}>
+
+            <Form.Item style={{ marginTop: "1rem" }}>
+              <Upload
+                accept=".jpg,.jpeg,.png"
+                onChange={(event) => setImage(event.file)}
+              >
                 <Button icon={<UploadOutlined />}>Upload an image</Button>
               </Upload>
             </Form.Item>

@@ -7,7 +7,7 @@ import { Button, Form, Input } from "antd";
 import { auth } from "../../Firebase.config";
 import { useContext, useState } from "react";
 import { ContextApp } from "../../context/ContextApp";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignupPage = () => {
   const [email, setEmail] = useState();
@@ -18,7 +18,11 @@ const SignupPage = () => {
 
   const handleSignup = async () => {
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       const user = userCredential.user;
       console.log("User registered:", user);
 
@@ -32,7 +36,7 @@ const SignupPage = () => {
         uid: user.uid,
         displayName: userName,
         email: email,
-        messages: []
+        messages: [],
       });
       console.log("User added to 'users' collection.");
 
@@ -54,13 +58,16 @@ const SignupPage = () => {
   return (
     <div className="SignupPage">
       <Form
-        className="SignInForm"
-        name="basic"
+        className="SignupForm"
         labelCol={{ span: 8 }}
         initialValues={{ remember: true }}
         onFinish={() => {}}
         autoComplete="off"
-        style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+        }}
       >
         <h1 style={{ marginBottom: "3rem", fontSize: "2rem" }}>SignIn</h1>
         <div className="SignInInputs">
@@ -83,7 +90,9 @@ const SignupPage = () => {
             name="password"
             rules={[{ required: true, message: "Please input your password!" }]}
           >
-            <Input.Password onChange={(event) => setPassword(event.target.value)} />
+            <Input.Password
+              onChange={(event) => setPassword(event.target.value)}
+            />
           </Form.Item>
         </div>
         <Button
@@ -94,10 +103,10 @@ const SignupPage = () => {
         >
           Submit
         </Button>
-        <a style={{ marginTop: "1.2rem", textAlign: "center" }} href="#">
+        <Link to="/login" style={{ marginTop: "1.2rem", textAlign: "center" }}>
           Do you have an account? <br />
-          <a href="">Log in</a>
-        </a>
+          <p>Log in</p>
+        </Link>
       </Form>
     </div>
   );
