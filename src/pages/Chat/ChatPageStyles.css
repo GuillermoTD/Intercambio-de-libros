@@ -2,9 +2,6 @@
   outline: none;
 }
 
-
-
-
 body {
   background-color: #0004;
   height: 100vh;
@@ -81,7 +78,7 @@ body {
   cursor: pointer;
 
   &:hover {
-    background-color: rgb(247, 122, 122);
+    background-color: rgb(60, 107, 238);
   }
 
   img {

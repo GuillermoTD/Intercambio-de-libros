@@ -17,9 +17,7 @@ import { Link } from "react-router-dom";
 import FilteredBooksPage from "../FilteredBooksPage/FilteredBooksPage";
 import { useNavigate } from "react-router-dom";
 import Chat from "../Chat/ChatPage";
-import { fetchDocuments } from "../../utils";
-import { collection, getDocs } from "firebase/firestore";
-import BookCard from "../../components/BookCard/BookCard"
+
 const { Header, Sider, Content } = Layout;
 
 const HomePage = () => {
@@ -29,110 +27,103 @@ const HomePage = () => {
   } = theme.useToken();
   const Navigate = useNavigate();
 
-  const [allBooks, setAllBooks] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const fetchAllBooks = await fetchDocuments(
-        collection,
-        db,
-        getDocs,
-        "books"
-      );
-      setAllBooks(fetchAllBooks);
+  function getItem(label, key, icon = "", children, type, link) {
+    return {
+      key,
+      icon,
+      children,
+      label,
+      type,
+      link,
     };
-    fetchData();
-  }, []);
+  }
+  // const items = [
+  //   {label:"Web Development",key:"/books/:webdevelopment"},
+  //   {label:"Hacking",key:"/books/:hacking"},
+  //   {label:"CyberSecurity",key:"/books/:cybersecurity"}
+  // ]
 
-  console.log(allBooks);
-  // const authenticate = () => {
-  //   signInWithEmailAndPassword(auth, "guillermotd23@gmail.com", "123456")
-  //     .then((userCredential) => {
-  //       const user = userCredential.user;
-  //       console.log("usuario logueado");
-  //       console.log(user);
-  //     })
-  //     .catch((error) => {
-  //       console.log("no se pudo loguear");
-  //       console.log(error.message);
-  //     });
-  // };
-  // authenticate();
-    return (
-      <div style={{ width: "100vw", height: "100vh", overflowX: "hidden" }}>
-        <Layout style={{ height: "100%", width: "100%" }}>
-          <Sider trigger={null} collapsible collapsed={collapsed}>
-            <div className="Dropdown">
-              <div className="Dropdown_Top">Category</div>
-              {!collapsed && (
-                <nav className="Dropdown_List">
-                  <Link to="/books/:webdevelopment">Web Development</Link>
-                  <Link to="/books/:hacking">Hacking</Link>
-                  <Link to="/books/:cybersecurity">Cyber Security</Link>
-                  <Link to="/books/:I.A">I.A</Link>
-                  <Link to="/books/:robotics">Robotics</Link>
-                  <Link to="/books/:datascience">Data science</Link>
-                </nav>
-              )}
-            </div>
-          </Sider>
-          <Layout>
-            <Header
+  const authenticate = () => {
+    signInWithEmailAndPassword(auth, "guillermotd23@gmail.com", "123456")
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log("usuario logueado");
+        console.log(user);
+      })
+      .catch((error) => {
+        console.log("no se pudo loguear");
+        console.log(error.message);
+      });
+  };
+  authenticate();
+  return (
+    <div style={{ width: "100vw", height: "100vh", overflowX: "hidden" }}>
+      <Layout style={{ height: "100%", width: "100%" }}>
+        <Sider trigger={null} collapsible collapsed={collapsed}>
+          <div className="Dropdown">
+            <div className="Dropdown_Top">Category</div>
+            {!collapsed && (
+              <nav className="Dropdown_List">
+                <Link to="/books/:webdevelopment">Web Development</Link>
+                <Link to="/books/:hacking">Hacking</Link>
+                <Link to="/books/:cybersecurity">Cyber Security</Link>
+                <Link to="/books/:I.A">I.A</Link>
+                <Link to="/books/:robotics">Robotics</Link>
+                <Link to="/books/:datascience">Data science</Link>
+              </nav>
+            )}
+          </div>
+        </Sider>
+        <Layout>
+          <Header
+            style={{
+              padding: 0,
+              background: colorBgContainer,
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Button
+              type="text"
+              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+              onClick={() => setCollapsed(!collapsed)}
               style={{
-                padding: 0,
-                background: colorBgContainer,
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
+                fontSize: "16px",
+                width: 64,
+                height: 64,
               }}
+            />
+            <Link
+              to="/newbook"
+              className="AddBook"
+              style={{ background: blue.primary }}
             >
-              <Button
-                type="text"
-                icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                onClick={() => setCollapsed(!collapsed)}
-                style={{
-                  fontSize: "16px",
-                  width: 64,
-                  height: 64,
-                }}
-              />
-              <Link to="/">
-                <h2>NerdBooks</h2>
-              </Link>
-              <Link
-                to="/newbook"
-                className="AddBook"
-                style={{ background: blue.primary }}
-              >
-                <PlusOutlined style={{ color: "white", fontSize: "1.5rem" }} />
-              </Link>
-              <Link to="chat">CHAT</Link>
-            </Header>
-            <Content
-              style={{
-                margin: "20px 10px",
-                padding: 15,
-                minHeight: 280,
-                background: colorBgContainer,
-                borderRadius: borderRadiusLG,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Outlet />
-          {/* {
-            allBooks?.map((item,index)=>{
-              return <BookCard key={index}>{item.title}</BookCard>
-            })
-          } */}
-            </Content>
-          </Layout>
+              <PlusOutlined style={{ color: "white", fontSize: "1.5rem" }} />
+            </Link>
+            <Link to="chat">
+              CHAT
+            </Link>
+          </Header>
+          <Content
+            style={{
+              margin: "20px 10px",
+              padding: 15,
+              minHeight: 280,
+              background: colorBgContainer,
+              borderRadius: borderRadiusLG,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+        <Outlet/>
+          </Content>
         </Layout>
-      </div>
-    );
-
+      </Layout>
+    </div>
+  );
 };
 export default HomePage;
 
